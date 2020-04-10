@@ -9,12 +9,12 @@ ser = serial.Serial("COM7",baudrate=115200)
 
 def sendcmd(msg):
     msgBuffer = msg
-    msg += '\r'
+
     msg = bytes(msg,encoding='utf-8')
     ser.write(msg)
     print('Sent: ', str(msg,'utf-8'))
-    time.sleep(.5)
-    if msgBuffer!="$Ar":
+    time.sleep(.1)
+    if msgBuffer!="$Ar\r":
         try:
             nackmsg = receivemsg()
             print('Received: ', str(nackmsg,'utf-8'))
@@ -27,11 +27,11 @@ def receivemsg():
     return ser.read(3)
 
 
-sendcmd('$S')
+sendcmd('$S\r')
 
-sendcmd('$CSNRM00')
+sendcmd('$CSNRM04\r$CBPVO00\r')
 
-sendcmd('$Ar')
+sendcmd('$Ar\r')
 
 #input('Key to close com port')
 ser.close()
