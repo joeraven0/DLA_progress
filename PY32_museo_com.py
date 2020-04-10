@@ -3,38 +3,35 @@ import time
 import codecs
 import sys
 
-ser = serial.Serial("COM7",baudrate=9600)
+ser = serial.Serial("COM7",baudrate=115200)
 
 
 
 def sendcmd(msg):
-    x=10
-
-    if (msg == '$S')or(msg=='$s'):
-        msg += '\r'
-        print('$ found: ',msg)
+    msgBuffer = msg
+    msg += '\r'
     msg = bytes(msg,encoding='utf-8')
     ser.write(msg)
     print('Sent: ', str(msg,'utf-8'))
-    time.sleep(.1)
-    nackmsg = receivemsg()
-
-
-    try:
-        print('Received: ', str(nackmsg,'utf-8'))
-    except:
-        print("Exception")
-    if str(nackmsg,'utf-8')=='>':
-        print('Command successfully sent!')
+    time.sleep(.5)
+    if msgBuffer!="$Ar":
+        try:
+            nackmsg = receivemsg()
+            print('Received: ', str(nackmsg,'utf-8'))
+        except:
+            print("Exception")
+        if str(nackmsg,'utf-8')=='$>':
+            print('Command successfully sent!')
 
 def receivemsg():
-    return ser.read()
+    return ser.read(3)
 
 
 sendcmd('$S')
 
-sendcmd('$CBPVO01')
+sendcmd('$CSNRM00')
 
-sendcmd('$s')
-input('Key to close com port')
+sendcmd('$Ar')
+
+#input('Key to close com port')
 ser.close()
