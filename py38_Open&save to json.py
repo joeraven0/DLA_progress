@@ -13,8 +13,11 @@ try:
     #print(data)
 except:
     print("File empty")
-
-data['checkinday'].update({'19950514':'10:19'})
+inday = input("Check in date?: ")
+intime = input("Check in time?: ")
+data['checkinday'].update({inday:intime})
 #print(data)
-with open('data_filea.json', 'w') as json_file:
+with open('data_file.json', 'w') as json_file:
     json.dump(data, json_file, ensure_ascii=False, indent=4)
+
+print(json.dumps(data, ensure_ascii=False, indent=4))
