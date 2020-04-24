@@ -1,7 +1,9 @@
 # -*- conding: utf-8 -*-
 
 import socket
-import keyboard
+import time
+#set phase time (s)
+phaseTime = 2
 
 # address and port is arbitrary
 def client(host="10.0.40.20", port=51237):
@@ -9,21 +11,23 @@ def client(host="10.0.40.20", port=51237):
     sock.connect((host, port))
 
     while True:
-          #data = input("[+] Enter string : ")
-          #sock.sendall(data.encode('utf-8'))
-          #print("[+] Sending to {}:{}".format(host, port))
+
+        
         #print("[+] Received", repr(response.decode('utf-8')))
-        if keyboard.read_key() == "t":
+        key = input("<t>-phase on, <r>-read data\n")
+        if key == "t":
             tmsg = 'S'
+            print("[+] Sending to {}:{}".format(host, port))
             sock.sendall(tmsg.encode('utf-8'))
             print("Trigger sent")
-        if keyboard.read_key() == "s":
+            time.sleep(phaseTime)
             tmsg = 'E'
+            print("[+] Sending to {}:{}".format(host, port))
             sock.sendall(tmsg.encode('utf-8'))
-            print("Trigger stop")
-        if keyboard.read_key() == "r":
+            print("Trigger stop")            
+        if key == "r":
             response = sock.recv(4096)
-        
+            
             if not response:
                 print("[-] Not Received")
                 
@@ -31,6 +35,5 @@ def client(host="10.0.40.20", port=51237):
       
 
 if __name__ == "__main__":
-  print("<t>-phase on, <s>-phase off, <r>-read data")
   client()
   
