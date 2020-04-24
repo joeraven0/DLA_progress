@@ -31,4 +31,6 @@ def client(host="10.0.40.20", port=51237):
       
 
 if __name__ == "__main__":
+  print("<t>-phase on, <s>-phase off, <r>-read data")
   client()
+  
