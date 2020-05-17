@@ -1,0 +1,101 @@
+[
+    {
+        "id": "c9cf7e93.814148",
+        "type": "tab",
+        "label": "Flow 1",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "548f16ee.df643",
+        "type": "ui_template",
+        "z": "c9cf7e93.814148",
+        "group": "c5db1dd6.f9111",
+        "name": "",
+        "order": 0,
+        "width": "16",
+        "height": "16",
+        "format": "<h1>Raw data</h1>\n<p><b>Chart id: </b>{{msg.title}}</p>\n<p><b>x:</b> {{msg.x}} <b>y:</b> {{msg.y}} <b>yaw:</b> {{msg.yaw}}</p>\n<svg width=\"400\" height=\"400\">\n  <rect width=\"400\" height=\"400\" style=\"fill:white;stroke-width:10;stroke:rgb(0,0,0)\" />\n    <circle cx=\"200\" cy=\"200\" r=\"40\"  stroke=\"black\" stroke-width=\"4\" fill=\"white\"/>\n    <circle cx=\"{{msg.yawx}}\" cy=\"{{msg.yawy}}\" r=\"5\"  stroke=\"red\" stroke-width=\"4\" fill=\"red\"/>\n  <line x1=\"200\" y1=\"200\" x2=\"{{msg.x}}\" y2=\"{{msg.y}}\" style=\"stroke:red;stroke-width:2\" />\n</svg>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": true,
+        "templateScope": "local",
+        "x": 740,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f30fd28b.5ce3f",
+        "type": "tcp in",
+        "z": "c9cf7e93.814148",
+        "name": "",
+        "server": "server",
+        "host": "",
+        "port": "51236",
+        "datamode": "stream",
+        "datatype": "buffer",
+        "newline": "\\n",
+        "topic": "",
+        "base64": false,
+        "x": 170,
+        "y": 240,
+        "wires": [
+            [
+                "46ccb230.388104"
+            ]
+        ]
+    },
+    {
+        "id": "44ef7220.97aec4",
+        "type": "debug",
+        "z": "c9cf7e93.814148",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "false",
+        "x": 730,
+        "y": 280,
+        "wires": []
+    },
+    {
+        "id": "46ccb230.388104",
+        "type": "function",
+        "z": "c9cf7e93.814148",
+        "name": "",
+        "func": "\nlet buffermsg = msg.payload.toString();\nlet spleet = buffermsg.split('*')\n\n\n//*xpos*ypos*yawpos*chartid\nyawx = (200+Math.cos(Number(spleet[3]) * Math.PI / 180)*40);\nyawy = (200-Math.sin(Number(spleet[3]) * Math.PI / 180)*40);\nmsg.x = Number(spleet[1])+200;\nmsg.y = Number(spleet[2]);\nmsg.yawx = yawx;\nmsg.yawy = yawy;\nmsg.yaw = Number(spleet[3]);\nmsg.title = spleet[4];\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 430,
+        "y": 420,
+        "wires": [
+            [
+                "44ef7220.97aec4",
+                "548f16ee.df643"
+            ]
+        ]
+    },
+    {
+        "id": "c5db1dd6.f9111",
+        "type": "ui_group",
+        "z": "",
+        "name": "Matrix 120 AGV",
+        "tab": "bf2d593f.051bd8",
+        "order": 1,
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "bf2d593f.051bd8",
+        "type": "ui_tab",
+        "z": "",
+        "name": "Home",
+        "icon": "dashboard",
+        "disabled": false,
+        "hidden": false
+    }
+]
