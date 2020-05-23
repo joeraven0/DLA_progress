@@ -3,5 +3,6 @@
 AGV<br>
 Input data<br>
 ```
-*-20*230*60*PlateID
+#x#y#yaw#PlateID
+#-20#230#60#PlateID
 ```
