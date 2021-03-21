@@ -1,5 +1,7 @@
 # DLA_progress
 
+These were the scripts that I worked on and didn't finished before I quit DLA.
+
 AGV<br>
 Input data<br>
 ```
